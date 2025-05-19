@@ -1,0 +1,7 @@
+NO_ACCESS = "❌ Нет доступа."
+COULDNT_FIND_A_PROFILE = "Не удалось найти профиль."
+CHECK_MARK = "✅"
+CROSS_MARK = "❌"
+PLACEHOLDER_BANNED = "Вы забанены.\nСчитаете это ошибкой — пишите @MashkaInsec"
+SUCCESSFULLY = "Успешно."
+EMPTY_PROFILE = "Отправь игровой профиль, чтобы начать пользоваться ботом."

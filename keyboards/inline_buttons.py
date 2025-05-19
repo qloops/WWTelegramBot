@@ -1,0 +1,8 @@
+PIN_NOTIFICATIONS_BUTTON = "Уведомление о рейдах"
+USER_BANNED_BUTTON = "{0} Забанен?"
+USER_CHAPTER_BUTTON = "{0} Глава?"
+DELETE_FROM_GANG_BUTTON = "🗑 Удалить из банды"
+YES_DELETION_BUTTON = "🗑 Точно удалить"
+NO_DELETION_BUTTON = "🙅 Не удалять"
+SHOW_LIST_USERS_GROUPS = "✖️ Выбрать группу"
+CREATE_USERS_GROUPS = "➕ Создать новую группу"
