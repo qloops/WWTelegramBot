@@ -22,7 +22,7 @@ def parse_pipboy_data(text: str, update1_time):
 
     return FullUserProfile(
         nickname=groups['nickname'].strip(),
-        fraction=groups['fraction'].strip(),
+        fraction=groups['emoji_fraction'].strip(),
         gang=groups['gang'].strip(),
         max_hp=int(groups['max_hp']),
         damage=int(groups['damage']),
