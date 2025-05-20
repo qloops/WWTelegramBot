@@ -2,13 +2,14 @@ from pymongo import MongoClient
 from pymongo.database import Database
 from pymongo.collection import Collection
 from pymongo.errors import ConnectionFailure
-from typing import Optional, Mapping, List, Any
+from typing import Optional, List, Any
 from bson import ObjectId
+from dataclasses import dataclass, asdict 
 
 
 class MongoDBInterface:
     client: Optional[MongoClient]
-    db: Optional[Database]
+    _db: Optional[Database]
 
     def __init__(self,  db_name: str, host: str = "localhost", port: int = 27017) -> None:
         self.client = None
@@ -20,22 +21,28 @@ class MongoDBInterface:
             self._db = self.client[db_name]
             self._db.command("ping")
         except ConnectionFailure as e:
+            if self.client:
+                self.client.close()
             raise ConnectionFailure(f"Could not connect to MongoDB at {host}:{port}: {e}")
         except Exception as e:
+            if self.client:
+                self.client.close()
             raise Exception(f"An unexpected error occurred during MongoDB connection: {e}")
 
     def _get_collection(self, collection_name: str) -> Collection:
         return self._db[collection_name]
-
-    def _insert_one(self, collection_name: str, document: Mapping[str, Any]) -> ObjectId:
+    # TODO Перечислить в анотации recrord dataclass, которые они могут принимать. 
+    def _insert_one(self, collection_name: str, record: Any) -> ObjectId:
         collection = self._get_collection(collection_name)
-        result = collection.insert_one(document)
+        document_to_insert = asdict(record)
+        result = collection.insert_one(document_to_insert)
         return result.inserted_id
 
-    def _insert_many(self, collection_name: str, documents: List[Mapping[str, Any]]) -> List[ObjectId]:
+    def _insert_many(self, collection_name: str, records: List[Any]) -> List[ObjectId]:
         collection = self._get_collection(collection_name)
-        result = collection.insert_many(documents)
+        documents_to_insert = [asdict(record) for record in records]
+        result = collection.insert_many(documents_to_insert)
         return result.inserted_ids
 
 
-db_interface: MongoDBInterface = MongoDBInterface("test")
+db_interface = MongoDBInterface(db_name="WW-Telegram-Bot")
