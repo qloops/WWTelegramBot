@@ -1,19 +1,22 @@
 import os
 import re
-from pyrogram import Client, filters
 import time
+
+from pyrogram import Client, filters
+from pyrogram.types import Message
+
 import bot
 from database.database import db_interface as db
 from database.models import FullUserProfile
 
 BOT_WW_ID = int(os.environ.get("BOT_WW_ID"))
-
 full_profile_regex = re.compile(
     r"^📟Пип-бой\s3000\sv\d+\.\d+\n(Игровое\sсобытие\n\".+?\")?\n(?P<nickname>.+),\s(?P<emoji_fraction>[🔪💣🔰⚛️⚙️👙🤕])(?P<fraction>.+)\n🤟Банда:\s(?P<gang>.+)\n❤️Здоровье:\s\d+/(?P<max_hp>\d+)\n☠️Голод:\s\d+%\s/myfood\n⚔️Урон:\s(?P<damage>\d+)\s🛡Броня:\s(?P<armor>\d+)(\s\(\+\d+\))?\n{2}💪Сила:\s(?P<strength>\d+)\s🎯Меткость:\s(?P<accuracy>\d+)\n🗣Харизма:\s(?P<charisma>\d+)\s🤸🏽‍♂️Ловкость:\s(?P<dexterity>\d+)\n💡Умения\s/perks\n⭐️Испытания\s/warpass\n{2}🔋Выносливость:\s\d+/(?P<max_energy>\d+)\s/ref\n📍.+?, 👣\d+км\.\s\n{2}Экипировка:.+?(🏵(?P<zen>\d+)\s[▓░]+\n)?ID(?P<uid>\d+)",
-    re.S)
+    re.S
+)
 
 
-def parse_pipboy_data(text: str, update1_time):
+def parse_pipboy_data(text: str, update_time: float):
     match = full_profile_regex.search(text)
     if not match:
         return None
@@ -21,20 +24,20 @@ def parse_pipboy_data(text: str, update1_time):
     groups = match.groupdict()
 
     return FullUserProfile(
-        nickname=groups['nickname'].strip(),
-        fraction=groups['emoji_fraction'].strip(),
-        gang=groups['gang'].strip(),
-        max_hp=int(groups['max_hp']),
-        damage=int(groups['damage']),
-        armor=int(groups['armor']),
-        strength=int(groups['strength']),
-        accuracy=int(groups['accuracy']),
-        charisma=int(groups['charisma']),
-        dexterity=int(groups['dexterity']),
-        max_energy=int(groups['max_energy']),
-        uid=int(groups['uid']),
-        zen=int(groups['zen'])-1 if groups['zen'] else 0,
-        update_time=update1_time
+        update_time=update_time,
+        nickname=groups["nickname"],
+        fraction=groups["emoji_fraction"],
+        gang=groups["gang"],
+        max_hp=int(groups["max_hp"]),
+        damage=int(groups["damage"]),
+        armor=int(groups["armor"]),
+        strength=int(groups["strength"]),
+        accuracy=int(groups["accuracy"]),
+        charisma=int(groups["charisma"]),
+        dexterity=int(groups["dexterity"]),
+        max_energy=int(groups["max_energy"]),
+        uid=int(groups["uid"]),
+        zen=int(groups["zen"]) - 1 if groups["zen"] else 0,
     )
 
 
@@ -43,13 +46,17 @@ def parse_pipboy_data(text: str, update1_time):
     filters.regex(full_profile_regex) &
     filters.create(lambda _, __, query: query.forward_from.id == BOT_WW_ID)
 )
-async def my_handler(client, message):
-    user_profile = parse_pipboy_data(message.text, message.forward_date.timestamp())
+async def profile_handler(client: Client, message: Message):
+    update_date: float = message.forward_date.timestamp()
+    limit_time: int = 15
+    user_id = message.from_user.id
+    user_profile = parse_pipboy_data(message.text, update_date)
+    
     if user_profile:
-        if user_profile.uid == message.from_user.id:
-            if time.time() - message.forward_date.timestamp() < 15:
-                if db.get_user_profile({'uid': user_profile.uid}):
-                    db.update_user_profile({'uid': user_profile.uid}, user_profile)
+        if user_profile.uid == user_id:
+            if time.time() - update_date < limit_time:
+                if db.get_user_profile({'uid': user_id}):
+                    db.update_user_profile({'uid': user_id}, user_profile)
                     await message.reply_text("Обновил твой пипбой!")
                 else:
                     db.insert_profile(user_profile)

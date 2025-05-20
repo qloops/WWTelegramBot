@@ -19,4 +19,13 @@ class FullUserProfile:
     zen: int = 0
 
     def to_str(self):
-        return f"{self.nickname} {self.fraction}\n🤟{self.gang}\n\n🎓{self.max_hp+self.strength+self.accuracy+self.charisma+self.dexterity} 🏵{self.zen}\n❤️{self.max_hp} ⚔️{self.damage} 🛡{self.armor}\n💪{self.strength} 🗣{self.charisma} 🤸🏽‍♂️{self.dexterity}\n🎯{self.accuracy} 🔋{self.max_energy}\nUID:{self.uid}"
+        return (
+            f"{self.nickname} {self.fraction}\n"
+            f"🤟{self.gang}\n\n"
+            f"🎓{self.max_hp+self.strength+self.accuracy+self.charisma+self.dexterity} "
+            f"🏵{self.zen}\n"
+            f"❤️{self.max_hp} ⚔️{self.damage} 🛡{self.armor}\n"
+            f"💪{self.strength} 🗣{self.charisma} 🤸🏽‍♂️{self.dexterity}\n"
+            f"🎯{self.accuracy} 🔋{self.max_energy}\n"
+            f"UID:{self.uid}"
+        )
