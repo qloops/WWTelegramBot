@@ -4,7 +4,7 @@ from utils.logging_config import configure_logging
 from dotenv import load_dotenv
 
 load_dotenv()
-configure_logging()
+configure_logging(logging.ERROR)
 
 from pyrogram import idle
 
