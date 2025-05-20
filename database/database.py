@@ -24,7 +24,7 @@ class MongoDBInterface:
     def __init__(self,  db_name: str, host: str = "localhost", port: int = 27017) -> None:
         self._client = None
         self._db = None
-        
+
         try:
             self._client = MongoClient(host, port, serverSelectionTimeoutMS=5000)
             
