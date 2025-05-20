@@ -1,10 +1,13 @@
+from typing import Optional, List, Any
+from bson import ObjectId
+from dataclasses import asdict 
+
 from pymongo import MongoClient
 from pymongo.database import Database
 from pymongo.collection import Collection
 from pymongo.errors import ConnectionFailure
-from typing import Optional, List, Any
-from bson import ObjectId
-from dataclasses import dataclass, asdict 
+
+from .models import FullUserProfile
 
 
 class MongoDBInterface:
@@ -44,5 +47,7 @@ class MongoDBInterface:
         result = collection.insert_many(documents_to_insert)
         return result.inserted_ids
 
+    def insert_profile(self, records: FullUserProfile):
+        self._insert_many("users_profiles", records)
 
 db_interface = MongoDBInterface(db_name="WW-Telegram-Bot")
