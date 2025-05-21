@@ -10,7 +10,7 @@ from pymongo.cursor import Cursor
 from pymongo.errors import ConnectionFailure
 from pymongo.results import UpdateResult
 
-from .models import FullUserProfile
+from .models import FullUserProfile, User
 
 logger = logging.getLogger(__name__)
 
@@ -20,6 +20,8 @@ class MongoDBInterface:
     _db: Optional[Database]
 
     USERS_PROFILES_COLLECTION: str = "users_profiles"
+    USERS_COLLECTION: str = "users"
+
 
     def __init__(self,  db_name: str, host: str = "localhost", port: int = 27017) -> None:
         self._client = None
@@ -134,7 +136,7 @@ class MongoDBInterface:
                 return None 
         return None
 
-    def get_user_profiles(
+    def get_users_profiles(
         self, 
         condition: Dict[str, Any],
         limit: int = 0,
@@ -151,6 +153,29 @@ class MongoDBInterface:
                 logger.error(f"Skipping doc due to TypeError: {e}. Document: {doc}")
                 continue 
         return profiles
-    
+    # ПРОСТО USER, НЕ PIPBOY
+    def insert_user(self, record: User) -> ObjectId:
+        return self._insert_one(self.USERS_COLLECTION, record)
+
+    def update_user(
+        self, 
+        condition: Dict[str, Any], 
+        updated_profile_data: User
+    ) -> UpdateResult:
+        data_to_set = asdict(updated_profile_data)
+        update_document = {"$set": data_to_set}
+        return self._update_one(self.USERS_COLLECTION, condition, update_document)
+
+    def get_user(self, condition: Dict[str, Any]) -> Optional[User]:
+        doc = self._find_one(self.USERS_COLLECTION, condition)
+        if doc:
+            doc.pop("_id", None) 
+            try:
+                return User(**doc)
+            except TypeError as e:
+                logger.error(f"Error creating User for doc {condition}: {e}. Document: {doc}")
+                return None 
+        return None
+
 
 db_interface = MongoDBInterface(db_name="WW-Telegram-Bot")

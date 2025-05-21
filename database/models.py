@@ -1,11 +1,13 @@
-from dataclasses import dataclass
+from typing import Dict
+from dataclasses import dataclass, field
 
 
 @dataclass
 class FullUserProfile:
     update_time: int
+    id: int
     nickname: str
-    fraction: str
+    emoji_fraction: str
     gang: str
     max_hp: int
     damage: int
@@ -15,12 +17,11 @@ class FullUserProfile:
     charisma: int
     dexterity: int
     max_energy: int
-    uid: int
     zen: int = 0
 
-    def to_str(self):
+    def get_formatted_profile(self):
         return (
-            f"{self.nickname} {self.fraction}\n"
+            f"{self.nickname} {self.emoji_fraction}\n"
             f"🤟{self.gang}\n\n"
             f"🎓{self.max_hp+self.strength+self.accuracy+self.charisma+self.dexterity} "
             f"🏵{self.zen}\n"
@@ -29,3 +30,11 @@ class FullUserProfile:
             f"🎯{self.accuracy} 🔋{self.max_energy}\n"
             f"UID:{self.uid}"
         )
+
+
+@dataclass
+class User:
+    id: int
+    settings: Dict[str, int] = field(default_factory=lambda:{"time_zone": 0, "pin_reminder": False, "raid_notify_sec": -1})
+    chapter: bool = False
+    administrator: bool = False
