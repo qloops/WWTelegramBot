@@ -1,3 +1,5 @@
+import re
+
 from pyrogram import Client, filters
 from pyrogram.types import Message
 
@@ -19,3 +21,8 @@ async def start_command(client: Client, message: Message):
         text="Салам!", 
         reply_markup=keyboard.MENU_BUTTON
     )
+
+
+@bot.bot.on_message(filters.regex(re.compile("^Назад$", re.I)))
+async def back_command(client: Client, message: Message):
+    await message.reply("/", reply_markup=keyboard.MENU_BUTTON)
