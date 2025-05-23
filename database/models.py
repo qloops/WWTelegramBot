@@ -28,7 +28,7 @@ class FullUserProfile:
             f"❤️{self.max_hp} ⚔️{self.damage} 🛡{self.armor}\n"
             f"💪{self.strength} 🗣{self.charisma} 🤸🏽‍♂️{self.dexterity}\n"
             f"🎯{self.accuracy} 🔋{self.max_energy}\n"
-            f"UID:{self.uid}"
+            f"UID:{self.id}"
         )
     
     def sum_of_stats(self):
@@ -74,3 +74,11 @@ class User:
     settings: Dict[str, int] = field(default_factory=lambda:{"time_zone": 0, "pin_reminder": False, "raid_notify_sec": -1})
     chapter: bool = False
     administrator: bool = False
+
+
+@dataclass
+class DetectedUserProfile:
+    nickname: str
+    goat: str
+    fraction: str
+    zen: int = 0
