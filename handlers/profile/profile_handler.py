@@ -56,8 +56,12 @@ async def profile_handler(client: Client, message: Message):
         if user_profile.uid == user_id:
             if time.time() - update_date < limit_time:
                 if db.get_user_profile({"id": user_id}):
-                    db.update_user_profile({"id": user_id}, user_profile)
-                    await message.reply_text("Обновил твой пипбой!")
+                    update_array = user_profile.compare_instances(db.get_user_profile({"id": user_profile.id}))
+                    db.update_user_profile({"id": user_profile.id}, user_profile)
+                    update_line=""
+                    for i in update_array:
+                        update_line+=f'{i}\n'
+                    await message.reply_text(f"Обновил твой пипбой!\n{update_line}")
                 else:
                     db.insert_profile(user_profile)
                     await message.reply_text("Записал твой пипбой, добро пожаловать!")
