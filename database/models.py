@@ -20,3 +20,10 @@ class FullUserProfile:
 
     def to_str(self):
         return f"{self.nickname} {self.fraction}\n{self.gang}\n\n{self.max_hp+self.strength+self.accuracy+self.charisma+self.dexterity} 🏵{self.zen}\n{self.max_hp} {self.damage} {self.armor}\n{self.strength} {self.charisma} {self.accuracy}\n{self.dexterity} {self.max_energy}\n{self.uid}"
+
+@dataclass
+class DetectedUserProfile:
+    nickname: str
+    goat:str
+    fraction: str
+    zen: int = 0

@@ -11,6 +11,7 @@ from pymongo.errors import ConnectionFailure
 from pymongo.results import UpdateResult
 
 from .models import FullUserProfile
+from .models import DetectedUserProfile
 
 logger = logging.getLogger(__name__)
 
@@ -20,6 +21,7 @@ class MongoDBInterface:
     _db: Optional[Database]
 
     USERS_PROFILES_COLLECTION: str = "users_profiles"
+    DETECTED_PROFILES_COLLECTION: str = "detected_profiles"
 
     def __init__(self,  db_name: str, host: str = "localhost", port: int = 27017) -> None:
         self._client = None
@@ -151,6 +153,45 @@ class MongoDBInterface:
                 logger.error(f"Skipping doc due to TypeError: {e}. Document: {doc}")
                 continue 
         return profiles
-    
 
+    def insert_detected_user_profile(self, record:DetectedUserProfile ) -> ObjectId:
+        return self._insert_one(self.DETECTED_PROFILES_COLLECTION, record)
+
+    def update_detected_user_profile(
+            self,
+            condition: Dict[str, Any],
+            updated_profile_data: DetectedUserProfile
+    ) -> UpdateResult:
+        data_to_set = asdict(updated_profile_data)
+        update_document = {"$set": data_to_set}
+        return self._update_one(self.DETECTED_PROFILES_COLLECTION, condition, update_document)
+
+    def get_detected_user_profile(self, condition: Dict[str, Any]) -> Optional[DetectedUserProfile]:
+        doc = self._find_one(self.DETECTED_PROFILES_COLLECTION, condition)
+        if doc:
+            doc.pop("_id", None)
+            try:
+                return DetectedUserProfile(**doc)
+            except TypeError as e:
+                logger.error(f"Error creating FullUserProfile for doc {condition}: {e}. Document: {doc}")
+                return None
+        return None
+
+    def get_detected_user_profiles(
+        self,
+        condition: Dict[str, Any],
+        limit: int = 0,
+        skip: int = 0,
+        sort: Optional[List[Tuple[str, int]]] = None
+    ) -> List[DetectedUserProfile]:
+        docs = self._find_many(self.DETECTED_PROFILES_COLLECTION, condition, limit=limit, skip=skip, sort=sort)
+        profiles: List[DetectedUserProfile] = []
+        for doc in docs:
+            doc.pop("_id", None)
+            try:
+                profiles.append(DetectedUserProfile(**doc))
+            except TypeError as e:
+                logger.error(f"Skipping doc due to TypeError: {e}. Document: {doc}")
+                continue
+        return profiles
 db_interface = MongoDBInterface(db_name="WW-Telegram-Bot")
