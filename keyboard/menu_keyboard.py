@@ -2,40 +2,56 @@ from pyrogram.types import (
     KeyboardButton, ReplyKeyboardMarkup
 )
 
+from . import buttons
+
 MENU_BUTTON = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton(text="Профиль"),
-            KeyboardButton(text="Настройки"),
-            KeyboardButton(text="Управление")
+            KeyboardButton(text=buttons.PROFILE_BUTTON),
+            KeyboardButton(text=buttons.SETTING_BUTTON),
+            KeyboardButton(text=buttons.CONTROL_BUTTON)
         ],
     ],
     resize_keyboard=True
 )
-
-
 SETTINGS_BUTTON = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton(text="Изменить часоовой пояс"),
-            KeyboardButton(text="Изменить секунды до напоминания"),
-            KeyboardButton(text="Назад")
-
+            KeyboardButton(text=buttons.SETTING_TIME_ZONE_BUTTON),
+            KeyboardButton(text=buttons.SETTING_NOTIFICATIONS_BUTTON)
         ],
+        [
+            KeyboardButton(text=buttons.BACK_BUTTON)
+
+        ]
     ],
     resize_keyboard=True
 )
+SETTINGS_NOTIFICATIONS = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton(text=buttons.SETTING_REMINDER_TIME_BUTTON)
 
+        ],
+        [
+            KeyboardButton(text=buttons.BACK_BUTTON)
 
+        ]
+    ],
+    resize_keyboard=True
+)
 CONTROL_BUTTON = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton(text="Пин"),
-            KeyboardButton(text="Настройка групп"),
-            KeyboardButton(text="Настройка пользователей"),
-            KeyboardButton(text="Назад")
+            KeyboardButton(text=buttons.CONTROL_PIN_BUTTON),
+            KeyboardButton(text=buttons.CONTROL_GROUPS_BUTTON),
+            KeyboardButton(text=buttons.CONTROL_USERS_BUTTON)
 
         ],
+        [
+            KeyboardButton(text=buttons.BACK_BUTTON)
+
+        ]
     ],
     resize_keyboard=True
 )

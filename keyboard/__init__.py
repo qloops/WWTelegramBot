@@ -1,3 +1,4 @@
-from .menu_keyboard import MENU_BUTTON, CONTROL_BUTTON, SETTINGS_BUTTON
+from . import menu_keyboard
+from . import buttons
 
-__all__ = ["MENU_BUTTON", "CONTROL_BUTTON", "SETTINGS_BUTTON"]
+__all__ = ["menu_keyboard", "buttons"]

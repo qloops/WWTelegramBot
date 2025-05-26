@@ -1,2 +1,2 @@
-from . import profile_handler
-from . import me_command
+from . import _profile_handler
+from . import _me_command
