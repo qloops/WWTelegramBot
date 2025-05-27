@@ -10,7 +10,11 @@ from pymongo.errors import ConnectionFailure
 from pymongo.results import UpdateResult
 from dataclasses import asdict
 
-from .repositories import UserRepository, UserSettingsRepository
+from .repositories import (
+    UserRepository, 
+    UserSettingsRepository, 
+    UserProfileRepository
+)
 
 logger = logging.getLogger(__name__)
 
@@ -22,6 +26,7 @@ class MongoDBInterface:
     # Repositories
     users: UserRepository
     users_settings: UserSettingsRepository
+    users_profiles: UserProfileRepository
 
     def __init__(self, db_name: str, host: str = "localhost", port: int = 27017) -> None:
         self._client = None
@@ -44,7 +49,8 @@ class MongoDBInterface:
     def _init_repositories(self):
         self.users = UserRepository(self)
         self.users_settings = UserSettingsRepository(self)
-    
+        self.users_profiles = UserProfileRepository(self)
+
     def close(self):
         if self._client:
             self._client.close()
