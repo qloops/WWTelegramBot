@@ -1,7 +1,7 @@
 from . import (
-    _view_handler,
+    # _view_handler,
     start_coommand,
-    profile,
+    # profile,
     control,
     settings,
     back_button

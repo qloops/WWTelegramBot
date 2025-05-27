@@ -8,9 +8,12 @@ MENU_BUTTON = ReplyKeyboardMarkup(
     keyboard=[
         [
             KeyboardButton(text=buttons.PROFILE_BUTTON),
-            KeyboardButton(text=buttons.SETTING_BUTTON),
-            KeyboardButton(text=buttons.CONTROL_BUTTON)
+            KeyboardButton(text=buttons.USER_STATISTICS_BUTTON)
         ],
+        [
+            KeyboardButton(text=buttons.CONTROL_BUTTON),
+            KeyboardButton(text=buttons.SETTING_BUTTON)
+        ]
     ],
     resize_keyboard=True
 )
