@@ -3,7 +3,7 @@ from pyrogram.types import Message, CallbackQuery
 from pyrogram.errors import MessageNotModified
 
 import bot
-import keyboard
+import keyboards
 import database
 
 def get_settings_string(settings: database.models.UserSettings) -> str:
@@ -31,7 +31,7 @@ async def switch_setting_callback(client: Client, call: CallbackQuery):
         try:
             await call.message.edit(
                 get_settings_string(user_settings), 
-                reply_markup=keyboard.inline_keyboards.INLINE_NOTIFICATIONS_SETTIТNG_BUTTON
+                reply_markup=keyboards.inline_keyboards.NOTIFICATIONS_SETTITNG_KEYBOARD
             )
         except MessageNotModified:
             pass
@@ -40,9 +40,9 @@ async def switch_setting_callback(client: Client, call: CallbackQuery):
 
 
 
-@bot.bot.on_message(filters.regex(f"^{keyboard.markup_buttons.SETTING_LIST_BUTTON}$"))
+@bot.bot.on_message(filters.regex(f"^{keyboards.markup_buttons.SETTING_LIST_BUTTON}$"))
 async def setting_list_button(client: Client, message: Message):
     user_id = message.from_user.id
     user_settigs = database.db_interface.users_settings.find_one(condition={"id": user_id})
 
-    await message.reply(get_settings_string(user_settigs), reply_markup=keyboard.inline_keyboards.INLINE_NOTIFICATIONS_SETTIТNG_BUTTON)
+    await message.reply(get_settings_string(user_settigs), reply_markup=keyboards.inline_keyboards.NOTIFICATIONS_SETTITNG_KEYBOARD)

@@ -1,0 +1,1 @@
+PIN_NOTIFICATIONS_BUTTON = "Уведомление о рейдах"

@@ -1,3 +1,7 @@
-from .bot import bot
+from .bot import (
+    bot
+)
 
-__all__ = ["bot"]
+__all__ = [
+    "bot"
+]

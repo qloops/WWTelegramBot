@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-timezones = {
+TIMEZONES = {
     "-12:00": timedelta(hours=-12),
     "-11:00": timedelta(hours=-11),
     "-10:00": timedelta(hours=-10),
@@ -41,6 +41,3 @@ timezones = {
     "+13:00": timedelta(hours=13),
     "+14:00": timedelta(hours=14),
 }
-
-def get_time_zone(zone_name: str) -> timedelta:
-    return timezones.get(zone_name)

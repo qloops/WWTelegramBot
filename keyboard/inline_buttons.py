@@ -1,3 +1,0 @@
-INLINE_BACK_BUTTON = "Назад"
-
-INLINE_SETTING_PIN_NOTIFICATIONS = "Уведомление о рейдах"

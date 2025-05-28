@@ -1,6 +1,6 @@
 import logging
 
-from .logging_config import configure_logging
+from logging_config import configure_logging
 from dotenv import load_dotenv
 
 load_dotenv()

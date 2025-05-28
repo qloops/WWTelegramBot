@@ -2,4 +2,6 @@ from . import (
     filters
 )
 
-__all__ = {"filters"}
+__all__ = [
+    "filters"
+]

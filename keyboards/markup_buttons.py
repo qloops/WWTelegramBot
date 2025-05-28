@@ -4,7 +4,6 @@ CONTROL_BUTTON = "Управление"
 BACK_BUTTON = "Назад"
 
 SETTING_TIME_ZONE_BUTTON = "Изменить пояс"
-SETTING_NOTIFICATIONS_BUTTON = "Настройка уведомлений"
 SETTING_LIST_BUTTON = "Список уведомлений"
 SETTING_REMINDER_TIME_BUTTON = "Изменить время напоминания"
 
