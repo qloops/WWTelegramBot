@@ -39,10 +39,6 @@ async def switch_setting_callback(client: Client, call: CallbackQuery):
     await call.answer("Успешно.", show_alert=True)
 
 
-@bot.bot.on_message(filters.regex(f"^{keyboard.markup_buttons.SETTING_NOTIFICATIONS_BUTTON}$"))
-async def setting_notifications_button(client: Client, message: Message):
-    await message.reply("/", reply_markup=keyboard.menu_keyboards.SETTINGS_NOTIFICATIONS_KEYBOARD)
-
 
 @bot.bot.on_message(filters.regex(f"^{keyboard.markup_buttons.SETTING_LIST_BUTTON}$"))
 async def setting_list_button(client: Client, message: Message):

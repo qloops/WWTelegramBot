@@ -1,5 +1,5 @@
-from .filters import (
-    game_bot_forwarded
+from . import (
+    filters
 )
 
-__all__ = {"game_bot_forwarded"}
+__all__ = {"filters"}

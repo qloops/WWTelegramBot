@@ -16,7 +16,6 @@ class User:
 class UserSettings:
     id: int
     time_zone: str = "+00:00"
-    raid_notify_seconds: float = 0.
     pin_notification: bool = False
 
 
@@ -55,3 +54,9 @@ class FullUserProfile:
     
     def _get_stats_sum(self) ->  int:
         return self.hp + self.strength + self.accuracy + self.charisma + self.dexterity
+
+
+@dataclass
+class MediaCache:
+    file_name: str
+    file_id: str

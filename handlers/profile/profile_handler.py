@@ -48,7 +48,7 @@ def parse_pipboy_data(text: str, updated_at: datetime):
 
 
 @bot.bot.on_message(
-    custom_filters.game_bot_forwarded() &
+    custom_filters.filters.game_bot_forwarded() &
     filters.regex(full_profile_regex)
 )
 async def profile_handler(client: Client, message: Message):

@@ -1,6 +1,6 @@
 import logging
 
-from utils.logging_config import configure_logging
+from .logging_config import configure_logging
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -20,5 +20,5 @@ async def main():
     await bot.stop()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     bot.run(main())

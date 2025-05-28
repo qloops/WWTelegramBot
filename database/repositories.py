@@ -6,7 +6,8 @@ from .base_repository import BaseRepository
 from .models import (
     User, 
     UserSettings, 
-    FullUserProfile
+    FullUserProfile,
+    MediaCache
 )
 
 
@@ -52,3 +53,7 @@ class UserProfileRepository(BaseRepository[FullUserProfile]):
     def __init__(self, db_interface: "MongoDBInterface"):
         super().__init__(db_interface, "users_profiles", FullUserProfile)
  
+
+class MediaCacheRepository(BaseRepository[MediaCache]):
+    def __init__(self, db_interface: "MongoDBInterface"):
+        super().__init__(db_interface, "media_cache", MediaCache)

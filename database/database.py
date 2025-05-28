@@ -13,7 +13,8 @@ from dataclasses import asdict
 from .repositories import (
     UserRepository, 
     UserSettingsRepository, 
-    UserProfileRepository
+    UserProfileRepository,
+    MediaCacheRepository
 )
 
 logger = logging.getLogger(__name__)
@@ -27,6 +28,7 @@ class MongoDBInterface:
     users: UserRepository
     users_settings: UserSettingsRepository
     users_profiles: UserProfileRepository
+    media_cache: MediaCacheRepository
 
     def __init__(self, db_name: str, host: str = "localhost", port: int = 27017) -> None:
         self._client = None
@@ -50,6 +52,7 @@ class MongoDBInterface:
         self.users = UserRepository(self)
         self.users_settings = UserSettingsRepository(self)
         self.users_profiles = UserProfileRepository(self)
+        self.media_cache = MediaCacheRepository(self)
 
     def close(self):
         if self._client:

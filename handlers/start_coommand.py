@@ -14,6 +14,6 @@ async def start_command(client: Client, message: Message):
         database.db_interface.users.insert_one(database.models.User(id=user_id))
     
     if message.chat.type == ChatType.PRIVATE:
-        await message.reply(text="Салам! Скинь профиль.", reply_markup=keyboard.menu_keyboards.MENU_kEYBOARD)
+        await message.reply(text="Салам! Скинь профиль.", reply_markup=keyboard.menu_keyboards.MENU_KEYBOARD)
     else:
         await message.reply(text="Салам!")
