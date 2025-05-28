@@ -30,7 +30,11 @@ class BaseRepository(Generic[T]):
         data_to_set = asdict(record)
         update_document = {"$set": data_to_set}
         return self._db._update_many(self._collection_name, condition, update_document)
-
+    
+    def update_field(self, condition: Dict[str, Any], field_name: str, field_value: Any) -> UpdateResult:
+        update_document = {"$set": {field_name: field_value}}
+        return self._db._update_one(self._collection_name, condition, update_document)
+    
     def find_one(self, condition: Dict[str, Any]) -> Optional[T]:
         doc = self._db._find_one(self._collection_name, condition)
         if doc:

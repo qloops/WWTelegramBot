@@ -1,13 +1,14 @@
 from .models import (
     User,
-    UserSettings
+    UserSettings,
+    FullUserProfile
 )
 
 from .base_repository import BaseRepository
 
 from .repositories import (
     UserRepository,
-    UserSettings,
+    UserSettingsRepository,
     UserProfileRepository
 )
 
@@ -29,6 +30,3 @@ __all__ = [
     "MongoDBInterface",
     "db_interface",
 ]
-
-def init_database(db_name: str = "WW-Telegram-Bot", host: str = "localhost", port: int = 27017) -> MongoDBInterface:
-    return MongoDBInterface(db_name=db_name, host=host, port=port)

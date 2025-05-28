@@ -1,5 +1,4 @@
 import re
-import time
 from datetime import datetime, timedelta
 
 from pyrogram import Client, filters
@@ -69,9 +68,8 @@ async def profile_handler(client: Client, message: Message):
                     # update_line+=f'{i}\n'
                 # await message.reply_text(f"Обновил твой пипбой!\n{update_line}")
                 database.db_interface.users_profiles.update_one(condition={"id": user_id}, record=user_profile)
-                await message.reply(f"Обновил твой пипбой!")
             else:
                 database.db_interface.users_profiles.insert_one(user_profile)
-                await message.reply("Записал твой пипбой.")
+            await message.reply("Обновил твой пипбой!")
         else:
-            await message.reply("Ускорься пожалуйста.")
+            await message.reply("/")

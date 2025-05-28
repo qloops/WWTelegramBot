@@ -7,12 +7,12 @@ import bot
 import keyboard
 import database
 
-@bot.bot.on_message(filters.regex(f"^{keyboard.buttons.PROFILE_BUTTON}$") | filters.command("me"))
+@bot.bot.on_message(filters.regex(f"^{keyboard.markup_buttons.PROFILE_BUTTON}$") | filters.command("me"))
 async def profile_command(client: Client, message: Message):
     user_id = message.from_user.id
     user_profile=database.db_interface.users_profiles.find_one(condition={"id": user_id})
 
     if not user_profile:
-        await message.reply("Не нашёл твоего профиля.")
+        await message.reply("Не удалось найти профиль.")
     else:
-        await message.reply(user_profile.get_formatted_profile())
+        await message.reply(user_profile.get_formatted_profile_string())
