@@ -71,7 +71,7 @@ class MediaCache:
     
     Attributes:
         cache_key: Unique key for the cached item
-        file_id: Telegram file identifier
+        file_id: Telegram file identifier (file_id)
     """
     cache_key: str
     file_id: str
