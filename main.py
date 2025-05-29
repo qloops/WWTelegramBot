@@ -23,8 +23,8 @@ async def main():
     try:
         await bot.start()
         logger.info(
-            f"Bot @{bot.me.username} started successfully!\n"
-            f"Bot version: {__version__}"
+            f"Bot @{bot.me.username} started!\n"
+            f"Version: {__version__}"
         )
         await idle()
     except Exception as e:

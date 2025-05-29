@@ -16,7 +16,7 @@ full_profile_regex = re.compile(
     r"\s🎯Меткость:\s(?P<accuracy>\d+)\n🗣Харизма:\s(?P<charisma>\d+)\s🤸🏽‍♂️Ловкость:\s(?P<dexterity>\d+)"
     r"\n💡Умения\s/perks\n⭐️Испытания\s/warpass\n{2}🔋Выносливость:\s\d+/(?P<energy>\d+)"
     r"\s/ref\n📍.+?\s👣\d+км\.\s\n{2}Экипировка:.+?Ресурсы:\n🕳Крышки:\s(?P<lid>\d+)"
-    r"\s\n📦Материалы:\s(?P<materials>\d+)\n💈Пупсы:\s(?P<pups>\d+).+?(🏵(?P<zen>\d+)\s[▓░]+\n)?ID(?P<id>\d+)",
+    r"\s\n📦Материалы:\s(?P<materials>\d+)\n💈Пупсы:\s(?P<pups>\d+).+?(🏵(?P<zen>\d+)\s[▓░]+\n)?ID(?P<user_id>\d+)",
     re.S
 )
 
@@ -26,7 +26,7 @@ def parse_pipboy_data(text: str, updated_at: datetime):
     groups = match.groupdict()
 
     return database.models.FullUserProfile(
-        user_id=int(groups["id"]),
+        user_id=int(groups["user_id"]),
         nickname=groups["nickname"],
         emoji_fraction=groups["emoji_fraction"],
         fraction_name=groups["fraction_name"],
@@ -61,15 +61,15 @@ async def profile_handler(client: Client, message: Message):
         await message.reply("Это не твой пипбой, я не стану его принимать!")
     else:
         if datetime.now() - updated_at < timedelta(seconds=limit_time):
-            if database.db_interface.users_profiles.exists(condition={"user_id": user_id}):
+            if database.db_interface.users_profile.exists(condition={"user_id": user_id}):
                 # update_array = user_profile.compare_instances(db.get_user_profile({"id": user_profile.id}))
                 # update_line=""
                 # for i in update_array:
                     # update_line+=f'{i}\n'
                 # await message.reply_text(f"Обновил твой пипбой!\n{update_line}")
-                database.db_interface.users_profiles.update_one(condition={"user_id": user_id}, record=user_profile)
+                database.db_interface.users_profile.update_one(condition={"user_id": user_id}, record=user_profile)
             else:
-                database.db_interface.users_profiles.insert_one(user_profile)
+                database.db_interface.users_profile.insert_one(user_profile)
             await message.reply("Обновил твой пипбой!")
         else:
             await message.reply("/")

@@ -1,4 +1,4 @@
-from typing import Dict, Any, Tuple
+from typing import TYPE_CHECKING, Dict, Any, Tuple
 
 from pymongo.results import UpdateResult
 
@@ -10,27 +10,48 @@ from .models import (
     MediaCache
 )
 
+if TYPE_CHECKING:
+    from .database import MongoDBInterface
+
 
 class UserRepository(BaseRepository[User]):
+    COLLECTION_NAME = "users"
+    
     def __init__(self, db_interface: "MongoDBInterface"):
-        super().__init__(db_interface, "users", User)
+        super().__init__(db_interface, self.COLLECTION_NAME, User)
 
 
 class UserSettingsRepository(BaseRepository[UserSettings]):
+    COLLECTION_NAME = "users_settings"
+    
     def __init__(self, db_interface: "MongoDBInterface"):
-        super().__init__(db_interface, "users_settings", UserSettings)
+        super().__init__(db_interface, self.COLLECTION_NAME, UserSettings)
 
-    def update_timezone(self, condition: Dict[str, Any], timezone_str: str) -> UpdateResult:
+    def update_timezone(self, user_id: int, timezone_str: str) -> UpdateResult:
+        """
+        Update user timezone setting.
+
+        Args:
+            user_id: User identifier
+            timezone_str: New timezone string value
+            
+        Returns:
+            UpdateResult: MongoDB update operation result
+        """
         return self.update_field(
-            condition=condition, 
+            condition={"user_id": user_id}, 
             field_name="time_zone",
             field_value=timezone_str
         )
 
     def toggle_boolean_setting(self, user_id: int, setting_name: str) -> Tuple[bool, bool]:
         """
-        Toggle boolean setting
-
+        Toggle boolean setting for a user.
+        
+        Args:
+            user_id: User identifier
+            setting_name: Name of the boolean setting to toggle
+            
         Returns:
             Tuple[bool, bool]: (operation success, new value)
         """
@@ -50,10 +71,14 @@ class UserSettingsRepository(BaseRepository[UserSettings]):
 
 
 class UserProfileRepository(BaseRepository[FullUserProfile]):
+    COLLECTION_NAME = "users_profile"
+    
     def __init__(self, db_interface: "MongoDBInterface"):
-        super().__init__(db_interface, "users_profiles", FullUserProfile)
+        super().__init__(db_interface, self.COLLECTION_NAME, FullUserProfile)
  
 
 class MediaCacheRepository(BaseRepository[MediaCache]):
+    COLLECTION_NAME = "media_cache"
+    
     def __init__(self, db_interface: "MongoDBInterface"):
-        super().__init__(db_interface, "media_cache", MediaCache)
+        super().__init__(db_interface, self.COLLECTION_NAME, MediaCache)

@@ -22,12 +22,14 @@ def configure_logging(console_level=logging.INFO):
 
     file_handler = RotatingFileHandler(
         log_file,
-        maxBytes=10*1024*1024,  # 10 MB
+        maxBytes=10*1024*1024,
         backupCount=5,
         encoding="utf-8"
     )
-    file_handler.setLevel(logging.DEBUG)
+    file_handler.setLevel(logging.ERROR)
     file_handler.setFormatter(formatter)
     logger.addHandler(file_handler)
 
-    logger.info(f"Logging configured: console level={logging.getLevelName(console_level)}, file level=DEBUG")
+    logging.getLogger("pyrogram").setLevel(logging.CRITICAL)
+    logging.getLogger("pymongo").setLevel(logging.CRITICAL)
+    logging.getLogger("asyncio").setLevel(logging.CRITICAL)

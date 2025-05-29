@@ -14,10 +14,19 @@ from .repositories import (
     MediaCacheRepository
 )
 
-from .database import MongoDBInterface, db_interface
+from .database import (
+    MongoDBInterface, 
+    db_interface
+)
+
+from .formatters import (
+    UserProfileFormatter
+)
 
 __all__ = [
     "BaseRepository",
+    "MongoDBInterface",
+    "db_interface",
 
     # Models
     "User",
@@ -31,6 +40,6 @@ __all__ = [
     "UserProfileRepository",
     "MediaCacheRepository",
 
-    "MongoDBInterface",
-    "db_interface",
+    # Formatters
+    "UserProfileFormatter"
 ]
