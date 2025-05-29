@@ -13,7 +13,7 @@ async def setting_time_zone_callback(client: Client, call: CallbackQuery):
     callback_data = call.matches[0].group("time_zone")
 
     database.db_interface.users_settings.update_timezone(
-        condition={"user_id": user_id}, 
+        user_id=user_id, 
         timezone_str=callback_data
     )
     user_settings = database.db_interface.users_settings.find_one(condition={"user_id": user_id})
