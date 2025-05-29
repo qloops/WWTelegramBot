@@ -6,7 +6,7 @@ from pyrogram.types import Message
 
 import bot
 import database
-import custom_filters
+import rules
 
 full_profile_regex = re.compile(
     r"^📟Пип-бой\s3000\sv\d+\.\d+\n(Игровое\sсобытие\n\".+?\")?\n(?P<nickname>.+)"
@@ -26,7 +26,7 @@ def parse_pipboy_data(text: str, updated_at: datetime):
     groups = match.groupdict()
 
     return database.models.FullUserProfile(
-        id=int(groups["id"]),
+        user_id=int(groups["id"]),
         nickname=groups["nickname"],
         emoji_fraction=groups["emoji_fraction"],
         fraction_name=groups["fraction_name"],
@@ -48,7 +48,7 @@ def parse_pipboy_data(text: str, updated_at: datetime):
 
 
 @bot.bot.on_message(
-    custom_filters.filters.game_bot_forwarded() &
+    rules.filters.game_bot_forwarded &
     filters.regex(full_profile_regex)
 )
 async def profile_handler(client: Client, message: Message):
@@ -57,17 +57,17 @@ async def profile_handler(client: Client, message: Message):
     limit_time: int = 15
     user_profile = parse_pipboy_data(text=message.text, updated_at=updated_at)
 
-    if user_profile.id != user_id:
+    if user_profile.user_id != user_id:
         await message.reply("Это не твой пипбой, я не стану его принимать!")
     else:
         if datetime.now() - updated_at < timedelta(seconds=limit_time):
-            if database.db_interface.users_profiles.exists(condition={"id": user_id}):
+            if database.db_interface.users_profiles.exists(condition={"user_id": user_id}):
                 # update_array = user_profile.compare_instances(db.get_user_profile({"id": user_profile.id}))
                 # update_line=""
                 # for i in update_array:
                     # update_line+=f'{i}\n'
                 # await message.reply_text(f"Обновил твой пипбой!\n{update_line}")
-                database.db_interface.users_profiles.update_one(condition={"id": user_id}, record=user_profile)
+                database.db_interface.users_profiles.update_one(condition={"user_id": user_id}, record=user_profile)
             else:
                 database.db_interface.users_profiles.insert_one(user_profile)
             await message.reply("Обновил твой пипбой!")

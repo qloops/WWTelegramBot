@@ -34,7 +34,7 @@ class UserSettingsRepository(BaseRepository[UserSettings]):
         Returns:
             Tuple[bool, bool]: (operation success, new value)
         """
-        settings = self.find_one({"id": user_id})
+        settings = self.find_one({"user_id": user_id})
         if not settings:
             return False, False
         
@@ -42,7 +42,7 @@ class UserSettingsRepository(BaseRepository[UserSettings]):
         new_value = not current_value
         
         result = self.update_field(
-            condition={"id": user_id},
+            condition={"user_id": user_id},
             field_name=setting_name,
             field_value=new_value
         )

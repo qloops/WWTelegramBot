@@ -8,4 +8,8 @@ import utils
 
 @bot.bot.on_message(filters.regex(f"^{keyboards.markup_buttons.SETTING_REMINDER_TIME_BUTTON}$"))
 async def control_button(client: Client, message: Message):
-    await utils.send_cached_image(chat_id=message.chat.id, file_name="technical_work.png", caption="🪛⚙️ Technical work")
+    await utils.send_cached_photo(
+        chat_id=message.chat.id, 
+        file_name="technical_work.png", 
+        caption="🪛⚙️ Technical work"
+    )

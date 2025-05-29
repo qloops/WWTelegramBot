@@ -9,7 +9,10 @@ from . import builders
 NOTIFICATIONS_SETTITNG_KEYBOARD = InlineKeyboardMarkup(
     inline_keyboard=[
         [
-            InlineKeyboardButton(text=inline_buttons.PIN_NOTIFICATIONS_BUTTON, callback_data="switch_setting_pin_notification")
+            InlineKeyboardButton(
+                text=inline_buttons.PIN_NOTIFICATIONS_BUTTON, 
+                callback_data="toggle_setting_pin_notification"
+            )
         ]
     ]
 )

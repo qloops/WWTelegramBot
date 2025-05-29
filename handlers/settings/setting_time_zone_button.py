@@ -13,10 +13,10 @@ async def setting_time_zone_callback(client: Client, call: CallbackQuery):
     callback_data = call.matches[0].group("time_zone")
 
     database.db_interface.users_settings.update_timezone(
-        condition={"id": user_id}, 
+        condition={"user_id": user_id}, 
         timezone_str=callback_data
     )
-    user_settings = database.db_interface.users_settings.find_one(condition={"id": user_id})
+    user_settings = database.db_interface.users_settings.find_one(condition={"user_id": user_id})
 
     try:
         await call.message.edit(user_settings.time_zone, reply_markup=keyboards.inline_keyboards.TIME_ZONE_KEYBOARD)
@@ -28,5 +28,5 @@ async def setting_time_zone_callback(client: Client, call: CallbackQuery):
 @bot.bot.on_message(filters.regex(f"^{keyboards.markup_buttons.SETTING_TIME_ZONE_BUTTON}$"))
 async def setting_time_zone_button(client: Client, message: Message):
     user_id = message.from_user.id
-    user_settigs = database.db_interface.users_settings.find_one(condition={"id": user_id})
+    user_settigs = database.db_interface.users_settings.find_one(condition={"user_id": user_id})
     await message.reply(user_settigs.time_zone, reply_markup=keyboards.inline_keyboards.TIME_ZONE_KEYBOARD)

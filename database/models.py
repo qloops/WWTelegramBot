@@ -4,7 +4,7 @@ from datetime import datetime
 
 @dataclass
 class User:
-    id: int
+    user_id: int
     administrator: bool = False
     chapter: bool = False
     
@@ -14,14 +14,14 @@ class User:
 
 @dataclass
 class UserSettings:
-    id: int
+    user_id: int
     time_zone: str = "+00:00"
     pin_notification: bool = False
 
 
 @dataclass
 class FullUserProfile:
-    id: int
+    user_id: int
     nickname: str
     emoji_fraction: str
     fraction_name: str
@@ -49,7 +49,7 @@ class FullUserProfile:
             f"❤️{self.hp} ⚔️{self.damage} 🛡{self.armor}\n"
             f"💪{self.strength} 🗣{self.charisma} 🤸🏽‍♂️{self.dexterity}\n"
             f"🎯{self.accuracy} 🔋{self.energy}\n"
-            f"UID:{self.id}"
+            f"UID:{self.user_id}"
         )
     
     def _get_stats_sum(self) ->  int:
@@ -58,5 +58,5 @@ class FullUserProfile:
 
 @dataclass
 class MediaCache:
-    file_name: str
+    cache_key: str
     file_id: str
