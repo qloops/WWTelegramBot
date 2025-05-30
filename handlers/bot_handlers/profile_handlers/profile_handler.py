@@ -1,6 +1,4 @@
-import re
-from datetime import datetime, timedelta
-from typing import Optional
+from datetime import datetime, timedelta, timezone
 
 from pyrogram import Client, filters
 from pyrogram.types import Message
@@ -9,6 +7,7 @@ import bot
 import database
 import rules
 import constants
+import utils
 
 PROFILE_UPDATE_TIMELIMIT_SECONDS = 15
 
@@ -56,7 +55,7 @@ def parse_profile_data(text: str, updated_at: datetime) -> database.models.FullU
 )
 async def profile_handler(client: Client, message: Message):
     user_id = message.from_user.id
-    updated_at = message.forward_date
+    updated_at = utils.convert_to_utc(message.forward_date)
 
     user_profile = parse_profile_data(
         text=message.text, 
@@ -66,8 +65,8 @@ async def profile_handler(client: Client, message: Message):
     if user_profile.user_id != user_id:
         await message.reply("Пипбой не твой, я не стану его принимать!")
         return
-    
-    if datetime.now() - updated_at > timedelta(seconds=PROFILE_UPDATE_TIMELIMIT_SECONDS):
+
+    if datetime.now(timezone.utc) - updated_at > timedelta(seconds=PROFILE_UPDATE_TIMELIMIT_SECONDS):
         await message.reply("Профиль устарел.")
         return
 

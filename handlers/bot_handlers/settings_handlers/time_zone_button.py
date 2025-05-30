@@ -1,3 +1,5 @@
+from datetime import datetime, timezone
+
 from pyrogram import Client, filters
 from pyrogram.types import Message, CallbackQuery
 from pyrogram.errors import MessageNotModified
@@ -5,7 +7,7 @@ from pyrogram.errors import MessageNotModified
 import bot
 import keyboards
 import database
-
+import views
 
 @bot.bot.on_callback_query(filters.regex(r"^set_timezone_(?P<time_zone>[+-]\d+:\d+)$"))
 async def setting_time_zone_callback(client: Client, call: CallbackQuery):
@@ -16,17 +18,25 @@ async def setting_time_zone_callback(client: Client, call: CallbackQuery):
         user_id=user_id, 
         timezone_str=callback_data
     )
-    user_settings = database.db_interface.users_settings.find_one(condition={"user_id": user_id})
 
+    user_settings = database.db_interface.users_settings.find_one(condition={"user_id": user_id})
+    
     try:
-        await call.message.edit(user_settings.time_zone, reply_markup=keyboards.inline_keyboards.TIME_ZONE_KEYBOARD)
+        await call.message.edit(
+            views.UserSettingsFormatter.to_local_time_zone(user_settings), 
+            reply_markup=keyboards.inline_keyboards.TIME_ZONE_KEYBOARD
+        )
     except MessageNotModified:
         pass 
-    await call.answer("Успешно.", show_alert=True)
+    await call.answer("Успешно.")
 
 
 @bot.bot.on_message(filters.regex(f"^{keyboards.markup_buttons.SETTING_TIME_ZONE_BUTTON}$"))
-async def setting_time_zone_button(client: Client, message: Message):
+async def time_zone_button(client: Client, message: Message):
     user_id = message.from_user.id
-    user_settigs = database.db_interface.users_settings.find_one(condition={"user_id": user_id})
-    await message.reply(user_settigs.time_zone, reply_markup=keyboards.inline_keyboards.TIME_ZONE_KEYBOARD)
+    user_settings = database.db_interface.users_settings.find_one(condition={"user_id": user_id})
+
+    await message.reply(
+        views.UserSettingsFormatter.to_local_time_zone(user_settings), 
+        reply_markup=keyboards.inline_keyboards.TIME_ZONE_KEYBOARD
+    )

@@ -1,6 +1,6 @@
 # database/models.py
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 @dataclass
@@ -19,8 +19,8 @@ class User:
     administrator: bool = False
     chapter: bool = False
     
-    created_at: datetime = field(default_factory=datetime.now)
-    updated_at: datetime = field(default_factory=datetime.now)
+    created_at: datetime = field(default_factory=datetime.now(timezone.utc))
+    updated_at: datetime = field(default_factory=datetime.now(timezone.utc))
 
 
 @dataclass

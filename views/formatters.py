@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 import constants
 import database
@@ -45,3 +45,28 @@ class UserProfileFormatter:
             dt=dt, 
             offset_delta=user_tz
         )
+
+
+class UserSettingsFormatter:
+    @staticmethod
+    def to_notifications_message(settings: database.models.UserSettings) -> str:
+        CHECK_MARK = "✅"
+        CROSS_MARK = "❌"
+        
+        notify_pin_status_emoji = CHECK_MARK if settings.pin_notification else CROSS_MARK
+
+        return (
+            "<b>🔔 Уведомления:</b>"
+            f"\n\n{notify_pin_status_emoji} Рейды"
+            "\n<i>(Уведомлять о рейдах.)</i>"
+        )
+    
+    @staticmethod
+    def to_local_time_zone(settings: database.models.UserSettings) -> str:
+        local_user_dt = UserProfileFormatter._convert_dt(
+            user_id=settings.user_id, 
+            dt=datetime.now(timezone.utc)
+        )
+        
+        local_user_dt = local_user_dt.replace(microsecond=0).replace(tzinfo=None)
+        return f"🕐 Твоё время: <code>{local_user_dt}</code>\nВыбранный пояс: <b>{settings.time_zone}</b>"

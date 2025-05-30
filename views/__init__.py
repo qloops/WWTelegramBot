@@ -1,7 +1,9 @@
 from .formatters import (
-    UserProfileFormatter
+    UserProfileFormatter,
+    UserSettingsFormatter
 )
 
 __all__ = [
-    "UserProfileFormatter"
+    "UserProfileFormatter",
+    "UserSettingsFormatter"
 ]

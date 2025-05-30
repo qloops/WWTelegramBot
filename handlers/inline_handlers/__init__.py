@@ -1,7 +1,7 @@
 from . import (
-    profle_handlers
+    general_handler
 )
 
 __all__ = [
-    "profle_handlers"
+    "general_handler"
 ]

@@ -10,18 +10,20 @@ MENU_KEYBOARD = ReplyKeyboardMarkup(
             KeyboardButton(text=markup_buttons.PROFILE_BUTTON),
             KeyboardButton(text=markup_buttons.SETTING_BUTTON)
         ],
+        [
+            KeyboardButton(text=markup_buttons.CONTROL_BUTTON),
+        ]
     ],
     resize_keyboard=True
 )
 SETTINGS_KEYBOARD = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton(text=markup_buttons.SETTING_TIME_ZONE_BUTTON),
-            KeyboardButton(text=markup_buttons.SETTING_LIST_BUTTON)
+            KeyboardButton(text=markup_buttons.SETTING_NOTIFICATIONS_BUTTON),
+            KeyboardButton(text=markup_buttons.SETTING_TIME_ZONE_BUTTON)
+
         ],
         [
-
-            KeyboardButton(text=markup_buttons.SETTING_REMINDER_TIME_BUTTON),
             KeyboardButton(text=markup_buttons.BACK_BUTTON)
         ]
     ],
