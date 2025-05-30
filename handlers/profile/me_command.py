@@ -4,6 +4,7 @@ from pyrogram.types import Message
 import bot
 import keyboards
 import database
+import views
 
 @bot.bot.on_message(filters.regex(f"^{keyboards.markup_buttons.PROFILE_BUTTON}$") | filters.command("me"))
 async def profile_command(client: Client, message: Message):
@@ -13,4 +14,4 @@ async def profile_command(client: Client, message: Message):
     if not user_profile:
         await message.reply("Не удалось найти профиль.")
     else:
-        await message.reply(database.UserProfileFormatter.to_telegram_message(user_profile))
+        await message.reply(views.UserProfileFormatter.to_user_message(user_profile))

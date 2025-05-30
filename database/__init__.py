@@ -19,10 +19,6 @@ from .database import (
     db_interface
 )
 
-from .formatters import (
-    UserProfileFormatter
-)
-
 __all__ = [
     "BaseRepository",
     "MongoDBInterface",
@@ -38,8 +34,5 @@ __all__ = [
     "UserRepository",
     "UserSettingsRepository",
     "UserProfileRepository",
-    "MediaCacheRepository",
-
-    # Formatters
-    "UserProfileFormatter"
+    "MediaCacheRepository"
 ]

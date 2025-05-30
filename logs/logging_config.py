@@ -4,7 +4,7 @@ import os
 from logging.handlers import RotatingFileHandler
 
 
-def configure_logging(console_level=logging.INFO):
+def configure_logging(console_level=logging.INFO, file_level=logging.ERROR):
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)
 
@@ -26,7 +26,7 @@ def configure_logging(console_level=logging.INFO):
         backupCount=5,
         encoding="utf-8"
     )
-    file_handler.setLevel(logging.ERROR)
+    file_handler.setLevel(file_level)
     file_handler.setFormatter(formatter)
     logger.addHandler(file_handler)
 

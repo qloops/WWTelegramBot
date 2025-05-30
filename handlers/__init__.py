@@ -4,5 +4,6 @@ from . import (
     profile,
     control,
     settings,
-    back_button
+    back_button,
+    inline_mod_handlers
 )

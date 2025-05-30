@@ -6,8 +6,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-log_level = os.getenv("LOG_LEVEL", "INFO")
-logs.configure_logging(getattr(logging, log_level))
+logs.configure_logging(
+    console_level=getattr(logging, os.getenv("CONSOLE_LOG_LEVEL", "ERROR")),
+    file_level=getattr(logging, os.getenv("FILE_LOG_LEVEL", "INFO"))
+)
 
 from pyrogram import idle
 
@@ -23,8 +25,7 @@ async def main():
     try:
         await bot.start()
         logger.info(
-            f"Bot @{bot.me.username} started!\n"
-            f"Version: {__version__}"
+            f"Bot @{bot.me.username} V{__version__} started!"
         )
         await idle()
     except Exception as e:
