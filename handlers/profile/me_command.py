@@ -1,18 +1,17 @@
-import re
-
 from pyrogram import Client, filters
 from pyrogram.types import Message
 
 import bot
-from database.database import db_interface as db
+import keyboards
+import database
+import views
 
-
-@bot.bot.on_message(filters.regex(re.compile("^Профиль$", re.I)) | filters.command("me"))
+@bot.bot.on_message(filters.regex(f"^{keyboards.markup_buttons.PROFILE_BUTTON}$") | filters.command("me"))
 async def profile_command(client: Client, message: Message):
     user_id = message.from_user.id
-    user_profile=db.get_user_profile({"id": user_id})
+    user_profile=database.db_interface.users_profile.find_one(condition={"user_id": user_id})
 
-    if user_profile:
-        await message.reply_text(user_profile.get_formatted_profile())
+    if not user_profile:
+        await message.reply("Не удалось найти профиль.")
     else:
-        await message.reply_text("Не нашел твоего профиля у себя в базе")
+        await message.reply(views.UserProfileFormatter.to_user_message(user_profile))

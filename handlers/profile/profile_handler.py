@@ -1,67 +1,75 @@
-import os
 import re
-import time
+from datetime import datetime, timedelta
 
 from pyrogram import Client, filters
 from pyrogram.types import Message
 
 import bot
-from database.database import db_interface as db
-from database.models import FullUserProfile
+import database
+import rules
 
-BOT_WW_ID = int(os.environ.get("BOT_WW_ID"))
 full_profile_regex = re.compile(
-    r"^📟Пип-бой\s3000\sv\d+\.\d+\n(Игровое\sсобытие\n\".+?\")?\n(?P<nickname>.+),\s(?P<emoji_fraction>[🔪💣🔰⚛️⚙️👙🤕])(?P<fraction_name>.+)\n🤟Банда:\s(?P<gang>.+)\n❤️Здоровье:\s\d+/(?P<max_hp>\d+)\n☠️Голод:\s\d+%\s/myfood\n⚔️Урон:\s(?P<damage>\d+)\s🛡Броня:\s(?P<armor>\d+)(\s\(\+\d+\))?\n{2}💪Сила:\s(?P<strength>\d+)\s🎯Меткость:\s(?P<accuracy>\d+)\n🗣Харизма:\s(?P<charisma>\d+)\s🤸🏽‍♂️Ловкость:\s(?P<dexterity>\d+)\n💡Умения\s/perks\n⭐️Испытания\s/warpass\n{2}🔋Выносливость:\s\d+/(?P<max_energy>\d+)\s/ref\n📍.+?, 👣\d+км\.\s\n{2}Экипировка:.+?(🏵(?P<zen>\d+)\s[▓░]+\n)?ID(?P<uid>\d+)",
+    r"^📟Пип-бой\s3000\sv\d+\.\d+\n(Игровое\sсобытие\n\".+?\")?\n(?P<nickname>.+)"
+    r",\s(?P<emoji_fraction>[🔪💣🔰⚛️⚙️👙🤕])(?P<fraction_name>.+)\n🤟Банда:\s(?P<gang>.+)"
+    r"\n❤️Здоровье:\s\d+/(?P<hp>\d+)\n☠️Голод:\s\d+%\s/myfood\n⚔️Урон:\s(?P<damage>\d+)"
+    r"\s🛡Броня:\s(?P<armor>\d+)(\s\(\+\d+\))?\n{2}💪Сила:\s(?P<strength>\d+)"
+    r"\s🎯Меткость:\s(?P<accuracy>\d+)\n🗣Харизма:\s(?P<charisma>\d+)\s🤸🏽‍♂️Ловкость:\s(?P<dexterity>\d+)"
+    r"\n💡Умения\s/perks\n⭐️Испытания\s/warpass\n{2}🔋Выносливость:\s\d+/(?P<energy>\d+)"
+    r"\s/ref\n📍.+?\s👣\d+км\.\s\n{2}Экипировка:.+?Ресурсы:\n🕳Крышки:\s(?P<lid>\d+)"
+    r"\s\n📦Материалы:\s(?P<materials>\d+)\n💈Пупсы:\s(?P<pups>\d+).+?(🏵(?P<zen>\d+)\s[▓░]+\n)?ID(?P<user_id>\d+)",
     re.S
 )
 
 
-def parse_pipboy_data(text: str, update_time: float):
+def parse_pipboy_data(text: str, updated_at: datetime):
     match = full_profile_regex.search(text)
-    if not match:
-        return None
-
     groups = match.groupdict()
 
-    return FullUserProfile(
-        update_time=update_time,
+    return database.models.FullUserProfile(
+        user_id=int(groups["user_id"]),
         nickname=groups["nickname"],
         emoji_fraction=groups["emoji_fraction"],
+        fraction_name=groups["fraction_name"],
         gang=groups["gang"],
-        max_hp=int(groups["max_hp"]),
+        hp=int(groups["hp"]),
         damage=int(groups["damage"]),
         armor=int(groups["armor"]),
         strength=int(groups["strength"]),
         accuracy=int(groups["accuracy"]),
         charisma=int(groups["charisma"]),
         dexterity=int(groups["dexterity"]),
-        max_energy=int(groups["max_energy"]),
-        uid=int(groups["id"]),
+        energy=int(groups["energy"]),
+        lid=int(groups["lid"]),
+        materials=int(groups["materials"]),
+        pups=int(groups["pups"]),
         zen=int(groups["zen"]) - 1 if groups["zen"] else 0,
+        updated_at=updated_at
     )
 
 
 @bot.bot.on_message(
-    filters.forwarded &
-    filters.regex(full_profile_regex) &
-    filters.create(lambda _, __, query: query.forward_from.id == BOT_WW_ID)
+    rules.filters.game_bot_forwarded &
+    filters.regex(full_profile_regex)
 )
 async def profile_handler(client: Client, message: Message):
-    update_date: float = message.forward_date.timestamp()
-    limit_time: int = 15
     user_id = message.from_user.id
-    user_profile = parse_pipboy_data(message.text, update_date)
+    updated_at: datetime = message.forward_date
+    limit_time: int = 15
+    user_profile = parse_pipboy_data(text=message.text, updated_at=updated_at)
 
-    if user_profile:
-        if user_profile.uid == user_id:
-            if time.time() - update_date < limit_time:
-                if db.get_user_profile({"id": user_id}):
-                    db.update_user_profile({"id": user_id}, user_profile)
-                    await message.reply_text("Обновил твой пипбой!")
-                else:
-                    db.insert_profile(user_profile)
-                    await message.reply_text("Записал твой пипбой, добро пожаловать!")
+    if user_profile.user_id != user_id:
+        await message.reply("Это не твой пипбой, я не стану его принимать!")
+    else:
+        if datetime.now() - updated_at < timedelta(seconds=limit_time):
+            if database.db_interface.users_profile.exists(condition={"user_id": user_id}):
+                # update_array = user_profile.compare_instances(db.get_user_profile({"id": user_profile.id}))
+                # update_line=""
+                # for i in update_array:
+                    # update_line+=f'{i}\n'
+                # await message.reply_text(f"Обновил твой пипбой!\n{update_line}")
+                database.db_interface.users_profile.update_one(condition={"user_id": user_id}, record=user_profile)
             else:
-                await message.reply_text("Ускорься пожалуйста, ты пересылаешь его слишком медленно")
+                database.db_interface.users_profile.insert_one(user_profile)
+            await message.reply("Обновил твой пипбой!")
         else:
-            await message.reply_text("Это не твой пипбой, я его не буду принимать!")
+            await message.reply("/")

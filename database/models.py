@@ -1,40 +1,77 @@
-from typing import Dict
+# database/models.py
 from dataclasses import dataclass, field
+from datetime import datetime
+
+
+@dataclass
+class User:
+    """
+    Represents a user in the system.
+    
+    Attributes:
+        user_id: Telegram user ID
+        administrator: Whether the user has admin privileges
+        chapter: Whether the user is a chapter member
+        created_at: Timestamp when the user was created
+        updated_at: Timestamp when the user was last updated
+    """
+    user_id: int
+    administrator: bool = False
+    chapter: bool = False
+    
+    created_at: datetime = field(default_factory=datetime.now)
+    updated_at: datetime = field(default_factory=datetime.now)
+
+
+@dataclass
+class UserSettings:
+    """
+    User-specific settings.
+    
+    Attributes:
+        user_id: Telegram user ID
+        time_zone: User's timezone offset
+        pin_notification: Does the user receive raid notifications
+    """
+    user_id: int
+    time_zone: str = "+00:00"
+    pin_notification: bool = False
 
 
 @dataclass
 class FullUserProfile:
-    update_time: int
-    id: int
+    user_id: int
     nickname: str
     emoji_fraction: str
+    fraction_name: str
     gang: str
-    max_hp: int
+    hp: int
     damage: int
     armor: int
     strength: int
     accuracy: int
     charisma: int
     dexterity: int
-    max_energy: int
-    zen: int = 0
+    energy: int
+    lid: int
+    materials: int
+    pups: int
+    zen: int
+    updated_at: datetime
 
-    def get_formatted_profile(self):
-        return (
-            f"{self.nickname} {self.emoji_fraction}\n"
-            f"🤟{self.gang}\n\n"
-            f"🎓{self.max_hp+self.strength+self.accuracy+self.charisma+self.dexterity} "
-            f"🏵{self.zen}\n"
-            f"❤️{self.max_hp} ⚔️{self.damage} 🛡{self.armor}\n"
-            f"💪{self.strength} 🗣{self.charisma} 🤸🏽‍♂️{self.dexterity}\n"
-            f"🎯{self.accuracy} 🔋{self.max_energy}\n"
-            f"UID:{self.uid}"
-        )
+    @property
+    def stats_sum(self) -> int:
+        return self.hp + self.strength + self.accuracy + self.charisma + self.dexterity
 
 
 @dataclass
-class User:
-    id: int
-    settings: Dict[str, int] = field(default_factory=lambda:{"time_zone": 0, "pin_reminder": False, "raid_notify_sec": -1})
-    chapter: bool = False
-    administrator: bool = False
+class MediaCache:
+    """
+    Cache for Telegram media file ID.
+    
+    Attributes:
+        cache_key: Unique key for the cached item
+        file_id: Telegram file identifier (file_id)
+    """
+    cache_key: str
+    file_id: str

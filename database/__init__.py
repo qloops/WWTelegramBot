@@ -1,3 +1,38 @@
-from .database import db_interface
+from .models import (
+    User,
+    UserSettings,
+    FullUserProfile,
+    MediaCache
+)
 
-__all_ = ["database", "models"]
+from .base_repository import BaseRepository
+
+from .repositories import (
+    UserRepository,
+    UserSettingsRepository,
+    UserProfileRepository,
+    MediaCacheRepository
+)
+
+from .database import (
+    MongoDBInterface, 
+    db_interface
+)
+
+__all__ = [
+    "BaseRepository",
+    "MongoDBInterface",
+    "db_interface",
+
+    # Models
+    "User",
+    "UserSettings",
+    "FullUserProfile",
+    "MediaCache",
+    
+    # Repositories
+    "UserRepository",
+    "UserSettingsRepository",
+    "UserProfileRepository",
+    "MediaCacheRepository"
+]
