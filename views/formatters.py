@@ -17,12 +17,10 @@ class UserProfileFormatter:
         Returns:
             Formatted string ready for Telegram
         """
-
         local_user_dt = UserProfileFormatter._convert_dt(
             user_id=profile.user_id,
             dt=profile.updated_at
         )
-
         return (
             f"{profile.emoji_fraction} <b>{profile.nickname}</b>\n"
             f"🤟 <b>{profile.gang}</b>\n\n"
@@ -62,7 +60,7 @@ class UserSettingsFormatter:
         )
     
     @staticmethod
-    def to_local_time_zone(settings: database.models.UserSettings) -> str:
+    def to_local_user_time(settings: database.models.UserSettings) -> str:
         local_user_dt = UserProfileFormatter._convert_dt(
             user_id=settings.user_id, 
             dt=datetime.now(timezone.utc)

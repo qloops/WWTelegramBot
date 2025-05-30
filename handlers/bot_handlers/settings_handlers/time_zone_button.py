@@ -23,7 +23,7 @@ async def setting_time_zone_callback(client: Client, call: CallbackQuery):
     
     try:
         await call.message.edit(
-            views.UserSettingsFormatter.to_local_time_zone(user_settings), 
+            views.UserSettingsFormatter.to_local_user_time(user_settings), 
             reply_markup=keyboards.inline_keyboards.TIME_ZONE_KEYBOARD
         )
     except MessageNotModified:
@@ -37,6 +37,6 @@ async def time_zone_button(client: Client, message: Message):
     user_settings = database.db_interface.users_settings.find_one(condition={"user_id": user_id})
 
     await message.reply(
-        views.UserSettingsFormatter.to_local_time_zone(user_settings), 
+        views.UserSettingsFormatter.to_local_user_time(user_settings), 
         reply_markup=keyboards.inline_keyboards.TIME_ZONE_KEYBOARD
     )
