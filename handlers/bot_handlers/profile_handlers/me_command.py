@@ -6,10 +6,13 @@ import keyboards
 import database
 import views
 
-@bot.bot.on_message(filters.regex(f"^{keyboards.markup_buttons.PROFILE_BUTTON}$") | filters.command("me"))
+@bot.bot.on_message(
+    filters.regex(f"^{keyboards.markup_buttons.PROFILE_BUTTON}$") | 
+    filters.command("me")
+)
 async def profile_command(client: Client, message: Message):
     user_id = message.from_user.id
-    user_profile=database.db_interface.users_profile.find_one(condition={"user_id": user_id})
+    user_profile=database.db_interface.users_profiles.find_one(condition={"user_id": user_id})
 
     if not user_profile:
         await message.reply("Не удалось найти профиль.")

@@ -36,7 +36,7 @@ class MongoDBInterface:
     # Repositories
     users: UserRepository
     users_settings: UserSettingsRepository
-    users_profile: UserProfileRepository
+    users_profiles: UserProfileRepository
     media_cache: MediaCacheRepository
 
     def __init__(self, db_name: str, host: str = "localhost", port: int = 27017) -> None:
@@ -72,7 +72,7 @@ class MongoDBInterface:
         """Initialize repository instances."""
         self.users = UserRepository(self)
         self.users_settings = UserSettingsRepository(self)
-        self.users_profile = UserProfileRepository(self)
+        self.users_profiles = UserProfileRepository(self)
         self.media_cache = MediaCacheRepository(self)
 
     def _get_collection(self, collection_name: str) -> Collection:
@@ -226,7 +226,7 @@ class _LazyDBInterface:
     # Repositories
     users: UserRepository
     users_settings: UserSettingsRepository
-    users_profile: UserProfileRepository
+    users_profiles: UserProfileRepository
     media_cache: MediaCacheRepository
 
     def __init__(self):

@@ -71,7 +71,7 @@ class UserSettingsRepository(BaseRepository[UserSettings]):
 
 
 class UserProfileRepository(BaseRepository[FullUserProfile]):
-    COLLECTION_NAME = "users_profile"
+    COLLECTION_NAME = "users_profiles"
     
     def __init__(self, db_interface: "MongoDBInterface"):
         super().__init__(db_interface, self.COLLECTION_NAME, FullUserProfile)

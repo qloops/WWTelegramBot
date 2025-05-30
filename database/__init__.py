@@ -19,10 +19,15 @@ from .database import (
     db_interface
 )
 
+from . import (
+    utils
+)
+
 __all__ = [
     "BaseRepository",
     "MongoDBInterface",
     "db_interface",
+    "utils",
 
     # Models
     "User",

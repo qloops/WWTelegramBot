@@ -30,6 +30,6 @@ def configure_logging(console_level=logging.INFO, file_level=logging.ERROR):
     file_handler.setFormatter(formatter)
     logger.addHandler(file_handler)
 
-    logging.getLogger("pyrogram").setLevel(logging.CRITICAL)
-    logging.getLogger("pymongo").setLevel(logging.CRITICAL)
-    logging.getLogger("asyncio").setLevel(logging.CRITICAL)
+    logging.getLogger("pyrogram").setLevel(logging.ERROR)
+    logging.getLogger("pymongo").setLevel(logging.ERROR)
+    logging.getLogger("asyncio").setLevel(logging.ERROR)

@@ -2,6 +2,11 @@ from .timezones import (
     TIMEZONES
 )
 
+from . import (
+    patterns
+)
+
 __all__ = [
-    "TIMEZONES"
+    "TIMEZONES",
+    "patterns"
 ]
