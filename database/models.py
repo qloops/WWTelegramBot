@@ -1,26 +1,27 @@
-# database/models.py
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
+
+import constants
 
 
 @dataclass
 class User:
     """
     Represents a user in the system.
-    
+
     Attributes:
-        user_id: Telegram user ID
-        administrator: Whether the user has admin privileges
-        chapter: Whether the user is a chapter member
-        created_at: Timestamp when the user was created
-        updated_at: Timestamp when the user was last updated
+        user_id (int): Telegram user ID.
+        access_level (str): The user's access level. This is the value of the UserAccessRoles enum,
+            not the enum object itself. This approach is used for compatibility with MongoDB, 
+            which does not support storing enum types directly.
+        created_at (datetime): Timestamp when the user was created (UTC).
+        updated_at (datetime): Timestamp when the user was last updated (UTC).
     """
     user_id: int
-    administrator: bool = False
-    chapter: bool = False
+    access_level: constants.UserAccessRoles = constants.UserAccessRoles.USER.value
     
-    created_at: datetime = field(default_factory=datetime.now(timezone.utc))
-    updated_at: datetime = field(default_factory=datetime.now(timezone.utc))
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 @dataclass

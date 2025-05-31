@@ -6,7 +6,12 @@ from . import (
     patterns
 )
 
+from .roles import (
+    UserAccessRoles
+)
+
 __all__ = [
     "TIMEZONES",
-    "patterns"
+    "patterns",
+    "UserAccessRoles"
 ]
