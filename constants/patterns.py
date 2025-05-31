@@ -13,3 +13,11 @@ class ProfilePatterns:
         r".+?(🏵(?P<zen>\d+)\s[▓░]+\n)?ID(?P<user_id>\d+)",
         re.DOTALL
     )
+    SHORT_PROFILE = re.compile(
+        r"^👤(?P<nickname>.+?)(🏵(?P<zen>\d+))?\n├🤟\s(?P<gang>.+?)\n├(?P<emoji_fraction>[🔪💣🔰⚛️⚙️👙🤕])"
+        r"(?P<fraction_name>.+?)\n├❤️\d+/(?P<hp>\d+)\s\|\s🍗\d+%\s\|\s⚔️(?P<damage>\d+)"
+        r"\s\|\s🛡(?P<armor>\d+)\n├💪(?P<strength>\d+)\s\|\s🎯(?P<accuracy>\d+)\n├🗣(?P<charisma>\d+)"
+        r"\s\|\s🤸🏽‍♂️(?P<dexterity>\d+)\n├🔋\d+/(?P<energy>\d+)\s\|\s👣\d+\n.+?├🕳(?P<lid>\d+)"
+        r"\n├📦(?P<materials>\d+)💈(?P<pups>\d+).+",
+        re.DOTALL
+    )

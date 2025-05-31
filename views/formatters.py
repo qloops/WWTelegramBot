@@ -7,7 +7,7 @@ import utils
 
 class UserProfileFormatter:
     @staticmethod
-    def to_user_message(profile: database.models.FullUserProfile) -> str:
+    def to_user_message(profile: database.models.UserProfile) -> str:
         """
         Format user profile for Telegram message.
         
@@ -33,7 +33,9 @@ class UserProfileFormatter:
             f"🕐:  <code>{local_user_dt}</code>\n"
             f"🆔:  <code>{profile.user_id}</code>"
         )
-    
+
+
+    # This function is not intended to be called directly, but is available in some parts of other modules. Left for backward compatibility.
     @staticmethod
     def _convert_dt(user_id: int, dt: datetime) -> datetime:
         user_settings = database.db_interface.users_settings.find_one(condition={"user_id": user_id})
@@ -56,7 +58,7 @@ class UserSettingsFormatter:
         return (
             "<b>🔔 Уведомления:</b>"
             f"\n\n{notify_pin_status_emoji} Рейды"
-            "\n<i>(Уведомлять о рейдах.)</i>"
+            "\n<i>(Уведомлять о пинах.)</i>"
         )
     
     @staticmethod

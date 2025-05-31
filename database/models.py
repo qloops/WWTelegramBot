@@ -31,7 +31,7 @@ class UserSettings:
     
     Attributes:
         user_id: Telegram user ID
-        time_zone: User's timezone offset
+        time_zone (str): User's timezone offset in format '+HH:MM' or '-HH:MM'.
         pin_notification: Does the user receive raid notifications
     """
     user_id: int
@@ -40,7 +40,7 @@ class UserSettings:
 
 
 @dataclass
-class FullUserProfile:
+class UserProfile:
     user_id: int
     nickname: str
     emoji_fraction: str

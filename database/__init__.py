@@ -1,7 +1,7 @@
 from .models import (
     User,
     UserSettings,
-    FullUserProfile,
+    UserProfile,
     MediaCache
 )
 
@@ -32,7 +32,7 @@ __all__ = [
     # Models
     "User",
     "UserSettings",
-    "FullUserProfile",
+    "UserProfile",
     "MediaCache",
     
     # Repositories

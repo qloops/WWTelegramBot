@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Dict, Any, Tuple
+from typing import TYPE_CHECKING, Tuple
 
 from pymongo.results import UpdateResult
 
@@ -6,7 +6,7 @@ from .base_repository import BaseRepository
 from .models import (
     User, 
     UserSettings, 
-    FullUserProfile,
+    UserProfile,
     MediaCache
 )
 
@@ -70,11 +70,11 @@ class UserSettingsRepository(BaseRepository[UserSettings]):
         return result.modified_count > 0, new_value
 
 
-class UserProfileRepository(BaseRepository[FullUserProfile]):
+class UserProfileRepository(BaseRepository[UserProfile]):
     COLLECTION_NAME = "users_profiles"
     
     def __init__(self, db_interface: "MongoDBInterface"):
-        super().__init__(db_interface, self.COLLECTION_NAME, FullUserProfile)
+        super().__init__(db_interface, self.COLLECTION_NAME, UserProfile)
  
 
 class MediaCacheRepository(BaseRepository[MediaCache]):
