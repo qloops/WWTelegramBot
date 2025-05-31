@@ -38,9 +38,9 @@ async def toggle_settings_callback(client: Client, call: CallbackQuery):
 @bot.bot.on_message(filters.regex(f"^{keyboards.markup_buttons.SETTING_NOTIFICATIONS_BUTTON}$"))
 async def notifications_button(client: Client, message: Message):
     user_id = message.from_user.id
-    user_settigs = database.db_interface.users_settings.find_one(condition={"user_id": user_id})
+    user_settings = database.db_interface.users_settings.find_one(condition={"user_id": user_id})
 
     await message.reply(
-        views.UserSettingsFormatter.to_notifications_message(user_settigs), 
+        views.UserSettingsFormatter.to_notifications_message(user_settings), 
         reply_markup=keyboards.inline_keyboards.NOTIFICATIONS_SETTITNG_KEYBOARD
     )
