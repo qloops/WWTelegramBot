@@ -20,9 +20,7 @@ async def view_users_button(client: Client, message: Message):
         return
     else:
         database.db_interface.users_profiles.find_all()
-        
-
-
+    
         await utils.send_cached_photo(
             chat_id=message.chat.id, 
             file_name="technical_work.png", 
