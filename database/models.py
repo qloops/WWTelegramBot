@@ -10,16 +10,18 @@ class User:
     Represents a user in the system.
 
     Attributes:
-        user_id (int): Telegram user ID.
+        user_id (int): Telegram user ID
         access_level (str): The user's access level. This is the value of the UserAccessRoles enum,
             not the enum object itself. This approach is used for compatibility with MongoDB, 
-            which does not support storing enum types directly.
-        created_at (datetime): Timestamp when the user was created (UTC).
-        updated_at (datetime): Timestamp when the user was last updated (UTC).
+            which does not support storing enum types directly
+        banned (bool): Is this user banned?
+        created_at (datetime): Timestamp when the user was created (UTC)
+        updated_at (datetime): Timestamp when the user was last updated (UTC)
     """
     user_id: int
     access_level: constants.UserAccessRoles = constants.UserAccessRoles.USER.value
-    
+    banned: bool = False
+
     created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     updated_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
@@ -31,7 +33,7 @@ class UserSettings:
     
     Attributes:
         user_id: Telegram user ID
-        time_zone (str): User's timezone offset in format '+HH:MM' or '-HH:MM'.
+        time_zone (str): User's timezone offset in format '+HH:MM' or '-HH:MM'
         pin_notification: Does the user receive raid notifications
     """
     user_id: int
@@ -76,3 +78,9 @@ class MediaCache:
     """
     cache_key: str
     file_id: str
+
+
+@dataclass
+class DetectedUser:
+    nickname: str
+    hp: int 

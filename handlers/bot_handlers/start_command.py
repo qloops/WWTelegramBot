@@ -14,8 +14,8 @@ async def start_command(client: Client, message: Message):
 
     if message.chat.type == ChatType.PRIVATE:
         await message.reply(
-            text="Салам! Скинь профиль.", 
+            text="Салам! Скинь профиль.\n\n<i>Попробуй команду /start, если что-то не работает.</i>", 
             reply_markup=keyboards.markup_keyboards.MENU_KEYBOARD
         )
     else:
-        await message.reply(text="Салам!")
+        await message.reply(text="Салам!\n\n<i>Попробуй команду /start, если что-то не работает.</i>")

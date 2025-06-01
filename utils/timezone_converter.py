@@ -40,7 +40,7 @@ def convert_to_timezone(dt: datetime, offset_delta: timedelta) -> datetime:
     target_tz = timezone(offset_delta)
 
     if dt.tzinfo is None:
-        logger.warning(f"Timezone {datetime} does not have tz_info attribute.")
+        # TODO: In all cases MongoDB and Pyrogram return objects without tz_info, this needs to be fixed.
         dt = dt.replace(tzinfo=timezone.utc)
 
     return dt.astimezone(target_tz)

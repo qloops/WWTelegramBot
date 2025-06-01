@@ -33,8 +33,10 @@ CONTROL_KEYBOARD = ReplyKeyboardMarkup(
     keyboard=[
         [
             KeyboardButton(text=markup_buttons.CONTROL_PIN_BUTTON),
-            KeyboardButton(text=markup_buttons.CONTROL_GROUPS_BUTTON),
-            KeyboardButton(text=markup_buttons.CONTROL_USERS_BUTTON)
+        ],
+        [
+            KeyboardButton(text=markup_buttons.CONTROL_SETTING_GROUPS_USERS_BUTTON),
+            KeyboardButton(text=markup_buttons.CONTROL_VIEW_USERS_BUTTON)
         ],
         [
             KeyboardButton(text=markup_buttons.BACK_BUTTON)

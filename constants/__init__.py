@@ -3,7 +3,8 @@ from .timezones import (
 )
 
 from . import (
-    patterns
+    patterns,
+    messages
 )
 
 from .roles import (
@@ -13,5 +14,6 @@ from .roles import (
 __all__ = [
     "TIMEZONES",
     "patterns",
-    "UserAccessRoles"
+    "UserAccessRoles",
+    "messages"
 ]

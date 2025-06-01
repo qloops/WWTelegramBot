@@ -8,19 +8,25 @@ import utils
 class UserProfileFormatter:
     @staticmethod
     def to_user_message(profile: database.models.UserProfile) -> str:
-        """
-        Format user profile for Telegram message.
-        
-        Args:
-            profile: User profile to format
-            
-        Returns:
-            Formatted string ready for Telegram
-        """
-        local_user_dt = UserProfileFormatter._convert_dt(
-            user_id=profile.user_id,
+        return UserProfileFormatter._format_profile(
+            profile=profile,
+            viewer_id=profile.user_id
+        )
+
+    @staticmethod
+    def to_admin_message(user_profile: database.models.UserProfile, admin_id: int) -> str:
+        return UserProfileFormatter._format_profile(
+            profile=user_profile,
+            viewer_id=admin_id
+        )
+
+    @staticmethod
+    def _format_profile(profile: database.models.UserProfile, viewer_id: int) -> str:
+        local_dt = UserProfileFormatter._convert_dt(
+            user_id=viewer_id,
             dt=profile.updated_at
         )
+        
         return (
             f"{profile.emoji_fraction} <b>{profile.nickname}</b>\n"
             f"🤟 <b>{profile.gang}</b>\n\n"
@@ -30,10 +36,9 @@ class UserProfileFormatter:
             f"🔋: <b>{profile.energy}</b>\n\n"
             f"БМ: <b>{profile.stats_sum}</b>\n"
             f"🏵: <b>{profile.zen}</b>\n\n"
-            f"🕐:  <code>{local_user_dt}</code>\n"
+            f"🕐:  <code>{local_dt}</code>\n"
             f"🆔:  <code>{profile.user_id}</code>"
         )
-
 
     # This function is not intended to be called directly, but is available in some parts of other modules. Left for backward compatibility.
     @staticmethod

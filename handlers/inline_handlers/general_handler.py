@@ -10,6 +10,7 @@ import bot
 import database
 import keyboards
 import views
+import constants
 
 
 @bot.bot.on_inline_query()
@@ -22,7 +23,7 @@ async def _(client: Client, inline_query: InlineQuery):
             database.db_interface.users_profiles.find_one(condition={"user_id": inline_query.from_user.id})
         )
     else:
-        text = "Не удалось найти профиль."
+        text = constants.messages.COULDNT_FIND_A_PROFILE
 
     await inline_query.answer(
         results=[

@@ -5,6 +5,8 @@ import bot
 import keyboards
 import database
 import views
+import constants
+
 
 @bot.bot.on_message(
     filters.regex(f"^{keyboards.markup_buttons.PROFILE_BUTTON}$") | 
@@ -15,6 +17,6 @@ async def profile_command(client: Client, message: Message):
     user_profile=database.db_interface.users_profiles.find_one(condition={"user_id": user_id})
 
     if not user_profile:
-        await message.reply("Не удалось найти профиль.")
+        await message.reply(constants.messages.COULDNT_FIND_A_PROFILE)
     else:
         await message.reply(views.UserProfileFormatter.to_user_message(user_profile))

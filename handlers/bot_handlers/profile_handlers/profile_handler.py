@@ -17,21 +17,26 @@ SHORT_PROFILE_UPDATE_TIMELIMIT_SECONDS = 5
 def _construct_user_profile(
     match_groups: Dict[str, str], 
     updated_at: datetime, 
-    user_id: int
+    user_id: int,
+    convert_zen: bool
 ) -> database.models.UserProfile:
     """
-    Convert extracted profile data into a UserProfile object.
+    Convert extracted profile data into a UserProfile object
 
     Args:
-        match_groups (Dict[str, str]): Dictionary containing profile data extracted using regex.
-        updated_at (datetime): Timestamp indicating when the profile was last updated.
-        user_id (int): User ID; if zero or falsy, it will be replaced with match_groups["user_id"].
+        match_groups (Dict[str, str]): Dictionary containing profile data extracted using regex
+        updated_at (datetime): Timestamp indicating when the profile was last updated
+        user_id (int): User ID; if zero or falsy, it will be replaced with match_groups["user_id"]
+        convert_zen: The flag indicates whether to subtract one from Zen
 
     Returns:
-        UserProfile: A fully populated UserProfile instance.
+        UserProfile: A fully populated UserProfile instance
     """
     user_id = user_id if user_id else int(match_groups["user_id"])
-    zen = int(match_groups["zen"]) - 1 if match_groups["zen"] else 0
+    zen = int(match_groups["zen"]) if match_groups["zen"] else 0
+
+    if convert_zen:
+        zen -= 1
    
     return database.models.UserProfile(
         user_id=user_id,
@@ -66,7 +71,8 @@ async def full_profile_handler(client: Client, message: Message):
     parse_profile = _construct_user_profile(
         match_groups=match_groups, 
         updated_at=updated_at,
-        user_id=user_id
+        user_id=user_id,
+        convert_zen=True
     )
 
     if parse_profile.user_id != user_id:
@@ -100,7 +106,8 @@ async def short_profile_handler(client: Client, message: Message):
     parsed_profile = _construct_user_profile(
         match_groups=match_groups, 
         updated_at=updated_at,
-        user_id=user_id
+        user_id=user_id,
+        convert_zen=True
     )
 
     if not database.db_interface.users_profiles.exists(condition={"user_id": user_id}):

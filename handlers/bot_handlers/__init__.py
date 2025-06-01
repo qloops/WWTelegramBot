@@ -3,7 +3,8 @@ from . import (
     back_button,
     profile_handlers,
     settings_handlers,
-    control_handlers
+    control_handlers,
+    admin_handlers
 )
 
 __all__ = [
@@ -14,5 +15,6 @@ __all__ = [
     # Packages
     "profile_handlers",
     "settings_handlers",
-    "control_handlers"
+    "control_handlers",
+    "admin_handlers"
 ]
