@@ -2,7 +2,7 @@ from typing import List
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 import constants
-import database
+
 
 def create_timezone_keyboard(buttons_per_row: int = 4) -> InlineKeyboardMarkup:
     timezones = list(constants.TIMEZONES.keys())
