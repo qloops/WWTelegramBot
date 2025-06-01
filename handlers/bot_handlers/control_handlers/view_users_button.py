@@ -9,7 +9,7 @@ import constants
 
 
 @bot.bot.on_message(filters.regex(f"^{keyboards.markup_buttons.CONTROL_VIEW_USERS_BUTTON}$"))
-async def control_button(client: Client, message: Message):
+async def view_users_button(client: Client, message: Message):
     user_id = message.from_user.id
     user = database.db_interface.users.find_one(condition={"user_id": user_id})
 
