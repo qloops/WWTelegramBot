@@ -2,7 +2,7 @@ from typing import List
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 import constants
-
+import database
 
 def create_timezone_keyboard(buttons_per_row: int = 4) -> InlineKeyboardMarkup:
     timezones = list(constants.TIMEZONES.keys())
@@ -19,3 +19,10 @@ def create_timezone_keyboard(buttons_per_row: int = 4) -> InlineKeyboardMarkup:
         buttons.append(row)
     
     return InlineKeyboardMarkup(buttons)
+
+def create_gangs_list_keyboard(
+        users_list: List[database.models.UserProfile]
+) -> InlineKeyboardMarkup:
+    unique_gangs_name = set([obj.gang])
+    pass
+    

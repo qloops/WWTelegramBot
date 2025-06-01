@@ -7,6 +7,8 @@ import utils
 import database
 import constants
 
+cache_users = {}
+
 
 @bot.bot.on_message(filters.regex(f"^{keyboards.markup_buttons.CONTROL_VIEW_USERS_BUTTON}$"))
 async def view_users_button(client: Client, message: Message):
@@ -17,6 +19,10 @@ async def view_users_button(client: Client, message: Message):
         await message.reply(constants.messages.NO_ACCESS)
         return
     else:
+        database.db_interface.users_profiles.find_all()
+        
+
+
         await utils.send_cached_photo(
             chat_id=message.chat.id, 
             file_name="technical_work.png", 

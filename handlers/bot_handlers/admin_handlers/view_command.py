@@ -10,9 +10,9 @@ import utils
 
 @bot.bot.on_message(
     filters.reply &
-    filters.command("who")
+    filters.command("view")
 )
-async def profile_command(client: Client, message: Message):
+async def view_command(client: Client, message: Message):
     user_id = message.from_user.id
     user =database.db_interface.users.find_one(condition={"user_id": user_id})
     if not utils.access_check(user=user, role=constants.UserAccessRoles.CHAPTER):

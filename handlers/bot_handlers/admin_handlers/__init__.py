@@ -1,7 +1,7 @@
 from . import (
-    who_command
+    view_command
 )
 
 __init__ = [
-    "who_command"
+    "view_command"
 ]

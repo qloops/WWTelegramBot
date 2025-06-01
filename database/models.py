@@ -78,9 +78,3 @@ class MediaCache:
     """
     cache_key: str
     file_id: str
-
-
-@dataclass
-class DetectedUser:
-    nickname: str
-    hp: int 
