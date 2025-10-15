@@ -37,4 +37,4 @@ async def empty_profile_handler(client: Client, message: Message):
         message.reply_to_message.from_user.id == os.environ.get("BOT_WW_ID")
     ):
         await message.reply(text=constants.messages.EMPTY_PROFILE)
-    return
+    return111
